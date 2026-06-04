@@ -1,0 +1,256 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum OwnershipType {
+  GOVERNMENT
+  PRIVATE
+  DEEMED
+  AUTONOMOUS
+}
+
+enum Degree {
+  BTECH
+  MTECH
+  MBBS
+  MD
+  MBA
+  MCA
+  BCA
+  BSC
+  MSC
+  BA
+  MA
+  LLB
+  BARCH
+  BPHARM
+  MPHARM
+  PHD
+}
+
+// ─── Lookup Tables ────────────────────────────────────────────────────────────
+
+model State {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  code     String    @unique
+
+  colleges College[]
+}
+
+model Stream {
+  id       String    @id @default(cuid())
+  name     String    @unique
+
+  programs Program[]
+}
+
+model Exam {
+  id         String      @id @default(cuid())
+  name       String      @unique
+  slug       String      @unique
+
+  admissions Admission[]
+}
+
+model Category {
+  id         String      @id @default(cuid())
+  name       String      @unique
+
+  admissions Admission[]
+}
+
+model Quota {
+  id         String      @id @default(cuid())
+  name       String      @unique
+
+  admissions Admission[]
+}
+
+// ─── User ─────────────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reviews   Review[]
+}
+
+// ─── College ──────────────────────────────────────────────────────────────────
+
+model College {
+  id              String        @id @default(cuid())
+  name            String
+  slug            String        @unique
+  shortName       String?
+  description     String?
+  city            String
+  stateId         String
+  country         String        @default("India")
+  establishedYear Int?
+  ownershipType   OwnershipType
+  website         String?
+  logoUrl         String?
+  bannerUrl       String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  state      State          @relation(fields: [stateId], references: [id])
+  programs   Program[]
+  placements Placement[]
+  reviews    Review[]
+  stats      CollegeStats[]
+  rankings   Ranking[]
+
+  @@index([stateId])
+}
+
+// ─── Program ──────────────────────────────────────────────────────────────────
+
+model Program {
+  id            String @id @default(cuid())
+  name          String
+  degree        Degree
+  durationYears Int
+  seats         Int?
+  collegeId     String
+  streamId      String
+
+  college    College       @relation(fields: [collegeId], references: [id])
+  stream     Stream        @relation(fields: [streamId], references: [id])
+  admissions Admission[]
+  fees       ProgramFees[]
+  placements Placement[]
+
+  @@unique([collegeId, name, degree])
+  @@index([collegeId])
+  @@index([streamId])
+}
+
+// ─── Program Fees ─────────────────────────────────────────────────────────────
+
+model ProgramFees {
+  id        String @id @default(cuid())
+  year      Int
+  amount    Int
+  programId String
+
+  program Program @relation(fields: [programId], references: [id])
+
+  @@unique([programId, year])
+  @@index([programId])
+}
+
+// ─── Admission (core cutoff table) ───────────────────────────────────────────
+
+model Admission {
+  id           String @id @default(cuid())
+  year         Int
+  openingValue Float?
+  closingValue Float?
+  examId       String
+  categoryId   String
+  quotaId      String
+  programId    String
+
+  exam     Exam     @relation(fields: [examId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+  quota    Quota    @relation(fields: [quotaId], references: [id])
+  program  Program  @relation(fields: [programId], references: [id])
+
+  @@unique([examId, categoryId, quotaId, programId, year])
+  @@index([examId, categoryId, quotaId, programId])
+  @@index([year])
+}
+
+// ─── Placement ────────────────────────────────────────────────────────────────
+
+model Placement {
+  id             String  @id @default(cuid())
+  year           Int
+  averagePackage Float?
+  medianPackage  Float?
+  highestPackage Float?
+  placementRate  Float?
+  totalOffers    Int?
+  collegeId      String
+  programId      String?
+
+  college College  @relation(fields: [collegeId], references: [id])
+  program Program? @relation(fields: [programId], references: [id])
+
+  @@unique([collegeId, programId, year])
+  @@index([collegeId])
+  @@index([programId])
+}
+
+// ─── Review ───────────────────────────────────────────────────────────────────
+
+model Review {
+  id              String   @id @default(cuid())
+  title           String
+  content         String
+  rating          Float
+  placementRating Float?
+  facultyRating   Float?
+  campusRating    Float?
+  collegeId       String
+  userId          String
+  createdAt       DateTime @default(now())
+
+  college College @relation(fields: [collegeId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@index([collegeId])
+  @@index([userId])
+}
+
+// ─── College Stats ────────────────────────────────────────────────────────────
+
+model CollegeStats {
+  id             String @id @default(cuid())
+  year           Int
+  lowestFees     Int?
+  highestFees    Int?
+  averagePackage Float?
+  overallRating  Float?
+  reviewCount    Int?
+  collegeId      String
+
+  college College @relation(fields: [collegeId], references: [id])
+
+  @@unique([collegeId, year])
+  @@index([collegeId])
+}
+
+// ─── Ranking ──────────────────────────────────────────────────────────────────
+
+model Ranking {
+  id        String @id @default(cuid())
+  source    String
+  rank      Int
+  year      Int
+  collegeId String
+
+  college College @relation(fields: [collegeId], references: [id])
+
+  @@unique([collegeId, source, year])
+  @@index([collegeId])
+}
