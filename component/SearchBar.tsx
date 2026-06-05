@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { FaviconSearch } from "@/components/unlumen-ui/favicon-search";
 
 interface College {
   id: string;
@@ -14,6 +15,7 @@ interface College {
 export default function SearchBar() {
   const [search, setSearch] = useState("");
   const [colleges, setColleges] = useState<College[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchColleges = async () => {
@@ -22,47 +24,72 @@ export default function SearchBar() {
         return;
       }
 
-      const res = await fetch(
-        `/api/colleges?search=${search}`
-      );
+      try {
+        setLoading(true);
 
-      const data = await res.json();
+        const res = await fetch(
+          `/api/colleges?search=${encodeURIComponent(search)}`
+        );
 
-      setColleges(data);
+        const data = await res.json();
+        setColleges(data);
+      } catch (error) {
+        console.error("Failed to fetch colleges:", error);
+        setColleges([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchColleges();
+    const timer = setTimeout(fetchColleges, 300); // debounce
+
+    return () => clearTimeout(timer);
   }, [search]);
 
   return (
-    <div className="w-full">
-      <input
-        type="text"
+    <div className="w-full space-y-4">
+      <FaviconSearch
         value={search}
-        onChange={(e) =>
-          setSearch(e.target.value)
-        }
-        placeholder="Search IIT Bombay, NIT Trichy..."
-        className="w-full border rounded-lg p-4"
+        placeholder="Search for colleges..."
+        onChange={setSearch}
+        onSearch={(value) => {
+          console.log("Searching:", value);
+        }}
       />
 
-      <div className="mt-4 space-y-2">
-        {colleges.map((college) => (
-          <Link
-            key={college.id}
-            href={`/college/${college.slug}`}
-            className="block border rounded-lg p-4 hover:bg-gray-50"
-          >
-            <h3 className="font-semibold">
-              {college.shortName || college.name}
-            </h3>
+      {loading && (
+        <div className="text-sm text-muted-foreground">
+          Searching colleges...
+        </div>
+      )}
 
-            <p className="text-sm text-gray-500">
-              {college.city}
-            </p>
-          </Link>
-        ))}
-      </div>
+      {!loading && colleges.length > 0 && (
+        <div className="space-y-2">
+          {colleges.map((college) => (
+            <Link
+              key={college.id}
+              href={`/college/${college.slug}`}
+              className="block rounded-lg border p-4 transition-colors hover:bg-muted"
+            >
+              <h3 className="font-semibold">
+                {college.shortName || college.name}
+              </h3>
+
+              <p className="text-sm text-muted-foreground">
+                {college.city}
+              </p>
+            </Link>
+          ))}
+        </div>
+      )}
+
+      {!loading &&
+        search.trim() &&
+        colleges.length === 0 && (
+          <div className="text-sm text-muted-foreground">
+            No colleges found.
+          </div>
+        )}
     </div>
   );
 }

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "base-nova",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "app/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "rtl": false,
+  "menuColor": "default",
+  "menuAccent": "subtle",
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "registries": {
+    "@fab-ui": "https://fab-ui.com/r/{name}.json",
+    "@scrollxui": "https://www.scrollxui.dev/registry/{name}.json",
+    "@emerald-ui": "https://emerald-ui.com/r/{name}.json",
+    "@unlumen-ui": "https://ui.unlumen.com/r/{name}.json"
+  }
+}
