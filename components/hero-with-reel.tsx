@@ -30,7 +30,8 @@ function Navbar() {
 
 export default function HeroWithReel() {
   return (
-    <div className='min-h-screen w-full bg-zinc-50 dark:bg-zinc-950 flex flex-col overflow-hidden transition-colors duration-500'>
+    /* FIXED HERE: Changed 'overflow-hidden' to 'overflow-x-hidden' to prevent the right-side cut-off */
+    <div className='min-h-screen w-full bg-zinc-50 dark:bg-zinc-950 flex flex-col overflow-x-hidden transition-colors duration-500'>
       <Navbar />
 
       <div className='flex-1 flex flex-col items-center pt-10 pb-16 text-center px-4'>
@@ -66,7 +67,7 @@ export default function HeroWithReel() {
           <OrbButton>Try it Free</OrbButton>
         </motion.div>
 
-     {/* Only changing the styling classes here to extend the width */}
+        {/* Only changing the styling classes here to extend the width */}
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}

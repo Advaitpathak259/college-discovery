@@ -6,7 +6,7 @@ import { motion } from 'motion/react';
 import SearchBar from "@/component/SearchBar";
 import { Reel, ReelItem } from '@/components/ui/reel';
 import { OrbButton } from '@/components/ui/orb-button';
-
+import ExamSection from "@/components/home/ExamSection";
 // High-quality global university campus imagery for the slider reel
 const collegeReelItems: ReelItem[] = [
   {
@@ -100,24 +100,25 @@ export default function HomePage() {
           </div>
         </motion.div>
 
-   <motion.div
-  initial={{ opacity: 0, y: 32 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.8, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
-  /* Change the classes here to this formula */
-  className='mt-16 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] opacity-95 hover:opacity-100 transition-opacity'
->
-  <div className="w-full overflow-hidden py-2">
-    <Reel
-      items={collegeReelItems}
-      rows={2}
-      pauseOnHover={true}
-      direction='alternate'
-    />
-  </div>
-</motion.div>
+        {/* Dynamic Interactive College Reel */}
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          className='mt-16 w-full opacity-95 hover:opacity-100 transition-opacity'
+        >
+          <div className="rounded-2xl overflow-hidden border border-stone-200/40 shadow-sm bg-white/30 p-2 backdrop-blur-sm">
+            <Reel
+              items={collegeReelItems}
+              rows={2}
+              pauseOnHover={true}
+              direction='alternate'
+            />
+          </div>
+        </motion.div>
 
       </main>
+      <ExamSection />
     </div>
   );
 }
