@@ -41,25 +41,13 @@ const collegeReelItems: ReelItem[] = [
   },
 ];
 
-function Navbar() {
-  return (
-    <nav className='flex w-full items-center justify-between border-b border-stone-200/60 px-6 py-4 bg-white/40 backdrop-blur-md z-10'>
-      <div className='flex items-center gap-2.5'>
-        <div className='size-6 rounded-md bg-[#B4975A]' />
-        <h1 className='text-md font-serif font-semibold tracking-tight text-stone-900'>
-          UnivDiscover
-        </h1>
-      </div>
-     
-    </nav>
-  );
-}
+
 
 export default function HomePage() {
   return (
     // Premium warm-ivory backdrop with smooth subtle grid dots
     <div className='min-h-screen w-full bg-[#FDFBF7] text-stone-900 flex flex-col overflow-hidden antialiased bg-[radial-gradient(#F3EDE0_1px,transparent_1px)] [background-size:24px_24px]'>
-      <Navbar />
+      
 
       <main className='flex-1 flex flex-col items-center pt-16 pb-20 text-center px-4 max-w-5xl mx-auto w-full z-0'>
         
