@@ -1,36 +1,266 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎓 College Discovery
 
-## Getting Started
+A modern college discovery and comparison platform built using **Next.js 15**, **TypeScript**, **Prisma**, **PostgreSQL (Neon)**, and **Tailwind CSS**.
 
-First, run the development server:
+Users can search colleges, explore admission cutoffs, compare institutions, analyze placements, view fee structures, and make informed college decisions.
+
+---
+
+##  Features
+
+###  College Search
+- Search colleges instantly
+- Search by name
+- Search by short name
+- Fast server-side filtering
+
+### College Details Page
+Each college includes:
+
+- Overview
+- Programs Offered
+- Fees
+- Placements
+- Rankings
+- Admission Cutoffs
+- Basic Information
+
+###  College Comparison
+Compare two colleges side-by-side:
+
+- Fees
+- Average Package
+- Highest Package
+- Placement Rate
+- Rankings
+- Ratings
+- Ownership
+- Establishment Year
+
+###  Exam Wise Cutoffs
+Supported Exams:
+
+- JEE Main
+- JEE Advanced
+- BITSAT
+- VITEEE
+- NEET
+- CAT
+
+Filters:
+
+- Exam
+- Category
+- Quota
+- College
+- Rank Range
+
+###  Placement Analytics
+
+Track:
+
+- Average Package
+- Median Package
+- Highest Package
+- Placement Rate
+
+###  Rankings
+
+Supports:
+
+- NIRF Rankings
+- Future ranking providers
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
+- Next.js 15
+- React 19
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+
+## Backend
+
+- Next.js Server Components
+- Prisma ORM
+
+## Database
+
+- PostgreSQL
+- Neon Database
+
+## Deployment
+
+- Docker
+- AWS
+- GitHub Actions
+
+---
+
+#  Project Structure
+
+```bash
+app/
+│
+├── page.tsx
+│
+├── college/
+│   └── [slug]/
+│       └── page.tsx
+│
+├── compare/
+│   └── page.tsx
+│
+├── exams/
+│   └── page.tsx
+│
+├── api/
+│
+components/
+│
+├── home/
+├── college/
+├── compare/
+├── exam/
+│
+lib/
+│
+└── prisma.ts
+│
+prisma/
+│
+├── schema.prisma
+└── seed.ts
+│
+data/
+│
+├── colleges.ts
+├── programs.ts
+├── placements.ts
+├── cutoffs.ts
+└── rankings.ts
+```
+
+---
+
+# 🗄 Database Design
+
+```text
+State
+│
+├── College
+│     ├── Program
+│     │     ├── Fees
+│     │     └── Admissions
+│     │
+│     ├── Placements
+│     ├── Rankings
+│     ├── Reviews
+│     └── Stats
+│
+├── Exam
+├── Category
+└── Quota
+```
+
+---
+
+# 🚀 Getting Started
+
+## 1. Clone Repository
+
+```bash
+git clone <repository-url>
+
+cd college-discovery
+```
+
+## 2. Install Dependencies
+
+```bash
+npm install
+```
+
+## 3. Setup Environment Variables
+
+Create:
+
+```bash
+.env
+```
+
+Add:
+
+```env
+DATABASE_URL=your_neon_database_url
+```
+
+---
+
+## 4. Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+## 5. Run Migrations
+
+```bash
+npx prisma migrate dev
+```
+
+## 6. Seed Database
+
+```bash
+npm run seed
+```
+
+or
+
+```bash
+tsx prisma/seed.ts
+```
+
+## 7. Start Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Application:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 📈 Current Modules
 
-## Deploy on Vercel
+✅ College Search
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+✅ College Details
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+✅ College Comparison
+
+✅ Exam Wise Cutoffs
+
+✅ Placements
+
+✅ Rankings
+
+✅ Responsive UI
+
+✅ Prisma + PostgreSQL
+
+✅ Seeded Data System
+
+---
+
